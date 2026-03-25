@@ -243,143 +243,294 @@
             box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
         }
 
-        /* Hero Section */
-        .hero {
+        /* Main Layout */
+        .app-container {
+            display: flex;
             min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: fixed;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 120px 40px 80px;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            z-index: 1;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 12px;
-            color: var(--accent-cyan);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        .badge-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .hero-title {
-            font-size: 72px;
-            font-weight: 900;
-            line-height: 1.1;
+            gap: 12px;
             margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease 0.1s both;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .hero-title .gradient {
+        .new-chat-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .new-chat-btn:hover {
+            background: var(--border);
+            border-color: var(--accent-primary);
+        }
+
+        .section-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 12px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
+        }
+
+        .chat-item:hover, .chat-item.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .chat-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Main Chat Area */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 80px);
+        }
+
+        .chat-header {
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chat-model {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            gap: 32px;
+        }
+
+        .welcome-title {
+            font-size: 48px;
+            font-weight: 800;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            position: relative;
         }
 
-        .hero-title .gradient::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30%;
-            background: var(--gradient-1);
-            opacity: 0.3;
-            filter: blur(20px);
-            z-index: -1;
-        }
-
-        .hero-subtitle {
-            font-size: 20px;
+        .welcome-subtitle {
             color: var(--text-secondary);
-            margin-bottom: 48px;
+            font-size: 18px;
+            max-width: 500px;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 0.6s ease 0.2s both;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Chat Interface */
-        .chat-container {
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 0.6s ease 0.3s both;
-        }
-
-        .chat-wrapper {
-            background: var(--bg-card);
+        .suggestion-chip {
+            background: var(--glass);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 8px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
+            color: var(--text-secondary);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .chat-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1px;
-            background: var(--gradient-1);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
+        .suggestion-chip:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            background: var(--bg-tertiary);
         }
 
-        .input-area {
+        .message {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--accent-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .message.user .message-header {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Input Area */
+        .input-container {
+            padding: 20px 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .input-wrapper {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
             display: flex;
             align-items: flex-end;
             gap: 12px;
-            background: var(--bg-tertiary);
-            border-radius: 20px;
-            padding: 16px;
-            position: relative;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
         .attach-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             border: none;
             background: transparent;
             color: var(--text-muted);
@@ -387,14 +538,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.2s;
             flex-shrink: 0;
         }
 
         .attach-btn:hover {
             background: var(--border);
             color: var(--text-primary);
-            transform: scale(1.1);
         }
 
         .input-field {
@@ -402,29 +552,22 @@
             background: transparent;
             border: none;
             color: var(--text-primary);
-            font-size: 16px;
+            font-size: 15px;
             line-height: 24px;
             resize: none;
             outline: none;
             min-height: 24px;
             max-height: 200px;
             font-family: inherit;
-            padding: 8px 0;
         }
 
         .input-field::placeholder {
             color: var(--text-muted);
-            transition: all 0.3s;
-        }
-
-        .input-field:focus::placeholder {
-            opacity: 0.5;
-            transform: translateX(10px);
         }
 
         .send-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: none;
             background: var(--text-muted);
@@ -433,328 +576,67 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
         }
 
         .send-btn.active {
             background: white;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
         .send-btn.active:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
-        .send-btn.active::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .send-btn.active:hover::before {
-            opacity: 1;
-        }
-
-        .send-btn svg {
-            position: relative;
-            z-index: 1;
-            transition: transform 0.3s;
-        }
-
-        .send-btn.active:hover svg {
-            transform: translateX(3px);
-            fill: white;
-        }
-
-        /* Suggestions */
-        .suggestions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 24px;
-            padding: 0 20px;
-        }
-
-        .suggestion-chip {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .suggestion-chip::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .suggestion-chip:hover {
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
-        .suggestion-chip:hover::before {
-            opacity: 0.1;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 120px 40px;
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 80px;
-        }
-
-        .section-label {
-            display: inline-block;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: var(--accent-cyan);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 18px;
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-primary);
-        }
-
-        .feature-card:hover::before {
-            opacity: 0.05;
-        }
-
-        .feature-icon {
-            width: 56px;
-            height: 56px;
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            padding: 16px 20px;
             background: var(--bg-tertiary);
             border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            border: 1px solid var(--border);
+        }
+
+        .typing-indicator.active {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.3s;
         }
 
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out both;
         }
 
-        .feature-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
 
-        .feature-desc {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Stats Section */
-        .stats {
-            padding: 80px 40px;
-            background: var(--bg-secondary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stats::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--gradient-1);
-        }
-
-        .stats-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            text-align: center;
-        }
-
-        .stat-item {
-            position: relative;
-        }
-
-        .stat-number {
-            font-size: 48px;
-            font-weight: 900;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* How it works */
-        .how-it-works {
-            padding: 120px 40px;
-        }
-
-        .steps {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .step {
-            display: flex;
-            gap: 24px;
-            align-items: flex-start;
-            opacity: 0;
-            transform: translateX(-30px);
-            animation: slideIn 0.6s ease forwards;
-        }
-
-        .step:nth-child(2) { animation-delay: 0.1s; }
-        .step:nth-child(3) { animation-delay: 0.2s; }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .step-number {
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
-            flex-shrink: 0;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-
-        .step-content h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .step-content p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Footer */
-        .footer {
-            padding: 60px 40px 40px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 32px;
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .footer-link:hover {
-            color: var(--text-primary);
-        }
-
-        .footer-copy {
-            color: var(--text-muted);
+        /* Dev Mode Indicator */
+        .dev-mode-banner {
+            display: none;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 8px 20px;
             font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .dev-mode-banner.active {
+            display: block;
         }
 
         /* Mobile Menu */
@@ -789,96 +671,50 @@
                 display: flex;
             }
 
-            .hero-title {
-                font-size: 48px;
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 100;
             }
 
-            .hero-subtitle {
-                font-size: 16px;
+            .sidebar.open {
+                transform: translateX(0);
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .main-content {
+                margin-left: 0;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            .messages-container {
+                padding: 20px;
             }
 
-            .section-title {
-                font-size: 36px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero-title {
-                font-size: 36px;
+            .welcome-title {
+                font-size: 32px;
             }
 
-            .chat-wrapper {
-                border-radius: 20px;
-            }
-
-            .suggestions {
-                display: none;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
+            .input-container {
+                padding: 15px 20px;
             }
         }
 
-        /* Scroll animations */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Loading animation */
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 4px;
-            padding: 16px 20px;
-        }
-
-        .typing-indicator.active {
-            display: flex;
-        }
-
-        .typing-dot {
+        /* Scrollbar */
+        ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: typingBounce 1.4s infinite ease-in-out both;
         }
 
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
         }
 
-        /* Glow effect */
-        .glow {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.3;
-            pointer-events: none;
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
         }
     </style>
 </head>
@@ -887,22 +723,26 @@
     <div class="bg-animation"></div>
     <div class="particles" id="particles"></div>
 
+    <!-- Dev Mode Banner -->
+    <div class="dev-mode-banner" id="devBanner">
+        🔐 РЕЖИМ РАЗРАБОТЧИКА АКТИВЕН — Все сообщения сохраняются как системные команды
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="logo" onclick="resetChat()">
                 <div class="logo-icon">C</div>
                 CerberAI
             </div>
             
             <div class="nav-links">
-                <a href="#features" class="nav-link">Возможности</a>
-                <a href="#how-it-works" class="nav-link">Как работает</a>
-                <a href="#stats" class="nav-link">Статистика</a>
-                <a href="#chat" class="nav-cta">Начать чат</a>
+                <a href="#" class="nav-link" onclick="showAbout()">О проекте</a>
+                <a href="#" class="nav-link" onclick="showMemory()">Память</a>
+                <a href="#" class="nav-cta" onclick="toggleDevMode()">Режим разработчика</a>
             </div>
 
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -910,184 +750,117 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="chat">
-        <div class="hero-content">
-            <div class="badge">
-                <span class="badge-dot"></span>
-                AI с долгосрочной памятью
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon" style="width: 32px; height: 32px; font-size: 16px;">C</div>
+                <span style="font-weight: 700;">CerberAI</span>
             </div>
             
-            <h1 class="hero-title">
-                Встречай <span class="gradient">CerberAI</span>
-            </h1>
+            <button class="new-chat-btn" onclick="newChat()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Новый чат
+            </button>
             
-            <p class="hero-subtitle">
-                Нейросеть, которая запоминает всё. Твои предпочтения, историю разговоров, важные факты — и использует это для персонализированного общения.
-            </p>
+            <div class="section-label">История</div>
+            <div class="chats-list" id="chatsList">
+                <div class="chat-item active" onclick="loadChat(0)">
+                    <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Текущий чат
+                </div>
+            </div>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-secondary">Войти</button>
+                <button class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+        </aside>
 
-            <!-- Chat Interface -->
-            <div class="chat-container">
-                <div class="chat-wrapper">
-                    <div class="input-area">
-                        <button class="attach-btn" title="Прикрепить файл">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                            </svg>
-                        </button>
-                        
-                        <textarea 
-                            class="input-field" 
-                            id="messageInput" 
-                            placeholder="Напиши свой вопрос..." 
-                            rows="1"
-                            oninput="handleInput(this)"
-                            onkeypress="handleKeyPress(event)"
-                        ></textarea>
-                        
-                        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-                            <svg class="send-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                            </svg>
-                        </button>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="chat-header">
+                <span class="chat-title">Новый чат</span>
+                <span class="chat-model" id="currentModel">OpenRouter: DeepSeek R1</span>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div>
+                        <h1 class="welcome-title">Привет, я CerberAI</h1>
+                        <p class="welcome-subtitle">
+                            Нейросеть с долгосрочной памятью. Я запоминаю важные факты о тебе 
+                            и использую их в наших разговорах. Напиши что-нибудь!
+                        </p>
                     </div>
                     
-                    <div class="typing-indicator" id="typingIndicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
+                    <div class="suggestion-chips">
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Расскажи о своих возможностях')">
+                            Расскажи о возможностях
+                        </div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Запомни, я люблю Python')">
+                            Запомни, я люблю Python
+                        </div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Кто твой создатель?')">
+                            Кто твой создатель?
+                        </div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Помоги с кодом')">
+                            Помоги с кодом
+                        </div>
                     </div>
                 </div>
 
-                <div class="suggestions">
-                    <span class="suggestion-chip" onclick="setInput('Расскажи о своих возможностях')">Расскажи о своих возможностях</span>
-                    <span class="suggestion-chip" onclick="setInput('Запомни, я люблю Python')">Запомни, я люблю Python</span>
-                    <span class="suggestion-chip" onclick="setInput('Помоги с кодом')">Помоги с кодом</span>
-                    <span class="suggestion-chip" onclick="setInput('Кто твой создатель?')">Кто твой создатель?</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features -->
-    <section class="features" id="features">
-        <div class="section-header scroll-reveal">
-            <span class="section-label">Возможности</span>
-            <h2 class="section-title">Почему CerberAI особенный?</h2>
-            <p class="section-subtitle">Не просто очередной чат-бот. Настоящий AI-компаньон с памятью и характером.</p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">🧠</div>
-                <h3 class="feature-title">Долгосрочная память</h3>
-                <p class="feature-desc">Запоминает важные факты о тебе, твои предпочтения и историю общения. Каждый разговор строится на предыдущем опыте.</p>
-            </div>
-
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">🔒</div>
-                <h3 class="feature-title">Приватность</h3>
-                <p class="feature-desc">Все данные хранятся в защищённой базе. Никакой передачи третьим лицам. Твои секреты — только твои.</p>
-            </div>
-
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Молниеносная скорость</h3>
-                <p class="feature-desc">Оптимизированная архитектура обеспечивает мгновенные ответы. Не жди — общайся.</p>
-            </div>
-
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">🎭</div>
-                <h3 class="feature-title">Адаптивный характер</h3>
-                <p class="feature-desc">Подстраивается под твой стиль общения. Хочешь формально? Или на ты? CerberAI учится и адаптируется.</p>
-            </div>
-
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">🌐</div>
-                <h3 class="feature-title">Веб-поиск</h3>
-                <p class="feature-desc">Может искать актуальную информацию в интернете и использовать её в разговоре. Всегда в курсе событий.</p>
-            </div>
-
-            <div class="feature-card scroll-reveal">
-                <div class="feature-icon">👥</div>
-                <h3 class="feature-title">Многопользовательский режим</h3>
-                <p class="feature-desc">У каждого пользователя своя история и контекст. Один бот — миллионы уникальных диалогов.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="stats" id="stats">
-        <div class="stats-grid">
-            <div class="stat-item scroll-reveal">
-                <div class="stat-number" data-target="10000">0</div>
-                <div class="stat-label">Сохранённых фактов</div>
-            </div>
-            <div class="stat-item scroll-reveal">
-                <div class="stat-number" data-target="99">0</div>
-                <div class="stat-label">% точности памяти</div>
-            </div>
-            <div class="stat-item scroll-reveal">
-                <div class="stat-number" data-target="50">0</div>
-                <div class="stat-label">Мс ответа</div>
-            </div>
-            <div class="stat-item scroll-reveal">
-                <div class="stat-number" data-target="24">0</div>
-                <div class="stat-label">/7 доступность</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How it works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="section-header scroll-reveal">
-            <span class="section-label">Принцип работы</span>
-            <h2 class="section-title">Как это работает?</h2>
-            <p class="section-subtitle">Три простых шага к персонализированному AI</p>
-        </div>
-
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Начни диалог</h3>
-                    <p>Просто напиши привет. CerberAI встретит тебя дружелюбно и предложит помощь.</p>
+                <!-- Messages will appear here -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
                 </div>
             </div>
 
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Обучай своими фактами</h3>
-                    <p>Скажи "Запомни, я люблю кофе" или "Меня зовут Алекс". CerberAI сохранит это навсегда.</p>
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <button class="attach-btn" title="Прикрепить файл (скоро)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                    </button>
+                    
+                    <textarea 
+                        class="input-field" 
+                        id="messageInput" 
+                        placeholder="Напиши сообщение..." 
+                        rows="1"
+                        oninput="handleInput(this)"
+                        onkeypress="handleKeyPress(event)"
+                    ></textarea>
+                    
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Наслаждайся персонализацией</h3>
-                    <p>Через неделю, месяц, год — CerberAI будет помнить о тебе всё и использовать это для комфортного общения.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="#" class="footer-link">О проекте</a>
-            <a href="#" class="footer-link">Приватность</a>
-            <a href="#" class="footer-link">GitHub</a>
-            <a href="#" class="footer-link">Поддержка</a>
-        </div>
-        <p class="footer-copy">© 2026 CerberAI. Создано с ❤️ Каином Сумраком</p>
-    </footer>
+        </main>
+    </div>
 
     <script>
+        // State
+        let currentChat = [];
+        let devMode = false;
+        let chatHistory = [];
+        
         // Generate particles
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 15; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
@@ -1104,56 +877,6 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
-        });
-
-        // Scroll reveal animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.scroll-reveal').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Animated counters
-        const animateCounter = (el) => {
-            const target = parseInt(el.dataset.target);
-            const duration = 2000;
-            const step = target / (duration / 16);
-            let current = 0;
-
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    el.textContent = target.toLocaleString();
-                    clearInterval(timer);
-                } else {
-                    el.textContent = Math.floor(current).toLocaleString();
-                }
-            }, 16);
-        };
-
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counters = entry.target.querySelectorAll('.stat-number');
-                    counters.forEach(counter => animateCounter(counter));
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.stats-grid').forEach(grid => {
-            statsObserver.observe(grid);
         });
 
         // Input handling
@@ -1176,61 +899,135 @@
             }
         }
 
-        function setInput(text) {
-            const input = document.getElementById('messageInput');
-            input.value = text;
-            handleInput(input);
-            input.focus();
-        }
-
+        // Send message
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
-            const sendBtn = document.getElementById('sendBtn');
-            const typingIndicator = document.getElementById('typingIndicator');
-            
-            if (!message || !sendBtn.classList.contains('active')) return;
+            if (!message) return;
 
-            // Simulate sending
-            sendBtn.classList.remove('active');
+            // Hide welcome screen
+            document.getElementById('welcomeScreen').style.display = 'none';
+            
+            // Add user message
+            addMessage(message, 'user');
+            
+            // Clear input
             input.value = '';
             handleInput(input);
-            typingIndicator.classList.add('active');
-
-            // Here will be actual API call
+            document.getElementById('sendBtn').classList.remove('active');
+            
+            // Show typing indicator
+            document.getElementById('typingIndicator').classList.add('active');
+            
+            // TODO: Send to backend
+            // For now, simulate response
             setTimeout(() => {
-                typingIndicator.classList.remove('active');
-                // Add response handling here
+                document.getElementById('typingIndicator').classList.remove('active');
+                
+                // Simulated response
+                let response = "Я получил твоё сообщение. Скоро здесь будет настоящий ответ от нейросети через OpenRouter API.";
+                
+                if (devMode) {
+                    response = "[DEV MODE] Команда сохранена: " + message;
+                }
+                
+                addMessage(response, 'bot');
             }, 1500);
         }
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            // Add mobile menu logic here
-            alert('Мобильное меню в разработке');
+        function sendQuickMessage(text) {
+            document.getElementById('messageInput').value = text;
+            handleInput(document.getElementById('messageInput'));
+            sendMessage();
         }
 
-        // Parallax effect for hero
-        document.addEventListener('mousemove', (e) => {
-            const mouseX = e.clientX / window.innerWidth - 0.5;
-            const mouseY = e.clientY / window.innerHeight - 0.5;
+        function addMessage(text, sender) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
             
-            const bg = document.querySelector('.bg-animation::before');
-            if (bg) {
-                bg.style.transform = `translate(${mouseX * 30}px, ${mouseY * 30}px)`;
+            const header = document.createElement('div');
+            header.className = 'message-header';
+            header.textContent = sender === 'user' ? 'Ты' : 'CerberAI';
+            
+            const content = document.createElement('div');
+            content.textContent = text;
+            
+            messageDiv.appendChild(header);
+            messageDiv.appendChild(content);
+            
+            // Insert before typing indicator
+            const typingIndicator = document.getElementById('typingIndicator');
+            container.insertBefore(messageDiv, typingIndicator);
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+            
+            // Save to current chat
+            currentChat.push({role: sender, content: text});
+        }
+
+        // Chat management
+        function newChat() {
+            currentChat = [];
+            document.getElementById('messagesContainer').innerHTML = `
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div>
+                        <h1 class="welcome-title">Привет, я CerberAI</h1>
+                        <p class="welcome-subtitle">
+                            Нейросеть с долгосрочной памятью. Я запоминаю важные факты о тебе 
+                            и использую их в наших разговорах. Напиши что-нибудь!
+                        </p>
+                    </div>
+                    <div class="suggestion-chips">
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Расскажи о своих возможностях')">Расскажи о возможностях</div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Запомни, я люблю Python')">Запомни, я люблю Python</div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Кто твой создатель?')">Кто твой создатель?</div>
+                        <div class="suggestion-chip" onclick="sendQuickMessage('Помоги с кодом')">Помоги с кодом</div>
+                    </div>
+                </div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            document.querySelector('.chat-title').textContent = 'Новый чат';
+        }
+
+        function resetChat() {
+            newChat();
+        }
+
+        // Dev mode
+        function toggleDevMode() {
+            devMode = !devMode;
+            const banner = document.getElementById('devBanner');
+            if (devMode) {
+                banner.classList.add('active');
+                alert('🔐 Режим разработчика АКТИВЕН\n\nВсе сообщения будут сохраняться как системные команды.\nИспользуй формат: +ключ=значение или просто текст для сохранения.');
+            } else {
+                banner.classList.remove('active');
             }
-        });
+        }
+
+        // Mobile sidebar
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Placeholder functions
+        function showAbout() {
+            alert('CerberAI v1.0\nСоздатель: Каин Сумрак\n\nНейросеть с долгосрочной памятью на базе OpenRouter API.');
+        }
+
+        function showMemory() {
+            alert('Просмотр памяти будет доступен после подключения к backend.');
+        }
+
+        function loadChat(id) {
+            // TODO: Load chat from history
+        }
     </script>
 </body>
 </html>
