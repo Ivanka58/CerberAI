@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
 import pytz
+import re
 
 MOSCOW_TZ = pytz.timezone('Europe/Moscow')
 
@@ -10,6 +11,14 @@ def get_db_connection():
     database_url = os.environ.get('DATABASE_URL')
     if not database_url:
         raise ValueError("DATABASE_URL not found")
+    
+    # Удаляем параметр pgbouncer из URL, так как psycopg2 его не понимает
+    database_url = re.sub(r'[?&]pgbouncer=[^&]*', '', database_url)
+    # Убираем лишний ? или & в конце, если остался
+    database_url = database_url.rstrip('?&')
+    # Если остался одиночный ? без параметров, убираем его
+    if database_url.endswith('?'):
+        database_url = database_url[:-1]
     
     conn = psycopg2.connect(database_url, sslmode='require')
     return conn
