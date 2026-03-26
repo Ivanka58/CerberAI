@@ -292,7 +292,7 @@ function loginWithTelegram() {
     
     const botUsername = 'your_bot_username';
     const uniqueCode = btoa(Date.now().toString()).substring(0, 10);
-    const telegramLink = `https://t.me/${botUsername}?start=${uniqueCode}`;
+    const telegramLink = `https://t.me/cerberlogin_bot?start=${uniqueCode}`;
     
     window.open(telegramLink, '_blank');
     
