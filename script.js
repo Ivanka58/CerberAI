@@ -5,7 +5,7 @@ const DEV_PASSWORD = typeof process !== 'undefined' && process.env.DEV_PASSWORD
 let devMode = false;
 let currentChat = [];
 let currentUser = null;
-let telegramCode = null;
+let currentUniqueLink = null;
 
 function initParticles() {
     const particlesContainer = document.getElementById('particles');
@@ -288,11 +288,11 @@ function loginWithTelegram() {
     closeModal('loginModal');
     closeModal('registerModal');
     
-    telegramCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // Генерируем уникальную ссылку и сохраняем для проверки
+    currentUniqueLink = generateUniqueLink();
     
-    const botUsername = 'your_bot_username';
-    const uniqueCode = btoa(Date.now().toString()).substring(0, 10);
-    const telegramLink = `https://t.me/cerberlogin_bot?start=${uniqueCode}`;
+    const botUsername = 'cerberlogin_bot';
+    const telegramLink = `https://t.me/${botUsername}?start=${currentUniqueLink}`;
     
     window.open(telegramLink, '_blank');
     
@@ -300,6 +300,15 @@ function loginWithTelegram() {
         document.getElementById('telegramCodeModal').classList.add('active');
         initCodeInputs();
     }, 1000);
+}
+
+function generateUniqueLink() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 10; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
 }
 
 function initCodeInputs() {
@@ -336,30 +345,60 @@ function initCodeInputs() {
     inputs[0].focus();
 }
 
-function verifyTelegramCode() {
+async function verifyTelegramCode() {
     const inputs = document.querySelectorAll('.code-input');
     let enteredCode = '';
     inputs.forEach(input => {
         enteredCode += input.value;
     });
     
-    if (enteredCode === telegramCode) {
-        closeModal('telegramCodeModal');
+    if (enteredCode.length !== 6) {
+        alert('Введите полный 6-значный код');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/auth/telegram', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: enteredCode,
+                unique_link: currentUniqueLink,
+                telegram_data: {
+                    id: Date.now(),
+                    username: 'TelegramUser_' + Math.floor(Math.random() * 10000),
+                    first_name: 'Telegram',
+                    last_name: 'User',
+                    photo_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + Date.now()
+                }
+            })
+        });
         
-        currentUser = {
-            id: Date.now(),
-            username: 'TelegramUser',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + Date.now(),
-            joinDate: new Date(),
-            daysCount: 0
-        };
+        const data = await response.json();
         
-        updateUIForLoggedInUser();
-        addChatMessage('✓ Авторизация успешна! Добро пожаловать, ' + currentUser.username, 'bot');
-    } else {
-        alert('Неверный код. Попробуйте ещё раз.');
-        inputs.forEach(input => input.value = '');
-        inputs[0].focus();
+        if (data.success) {
+            closeModal('telegramCodeModal');
+            
+            currentUser = {
+                id: data.user.id,
+                username: data.user.username,
+                avatar: data.user.avatar,
+                joinDate: new Date(),
+                daysCount: data.user.days_count || 0
+            };
+            
+            updateUIForLoggedInUser();
+            addChatMessage('✓ Авторизация успешна! Добро пожаловать, ' + currentUser.username, 'bot');
+        } else {
+            alert('Неверный код. Попробуйте ещё раз.');
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+        }
+    } catch (error) {
+        console.error('Auth error:', error);
+        alert('Ошибка соединения. Попробуйте позже.');
     }
 }
 
@@ -410,6 +449,7 @@ function confirmLogoutYes() {
     closeModal('profileModal');
     
     currentUser = null;
+    currentUniqueLink = null;
     
     document.getElementById('sidebarAuth').classList.remove('hidden');
     document.getElementById('sidebarUser').classList.add('hidden');
