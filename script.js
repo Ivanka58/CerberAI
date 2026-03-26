@@ -1,3 +1,5 @@
+const API_URL = 'https://amvera-kainsumrak-run-cerberweb';
+
 const DEV_PASSWORD = typeof process !== 'undefined' && process.env.DEV_PASSWORD 
     ? process.env.DEV_PASSWORD 
     : '040111';
@@ -357,8 +359,10 @@ async function verifyTelegramCode() {
         return;
     }
     
+    console.log('Sending:', { code: enteredCode, unique_link: currentUniqueLink });
+    
     try {
-        const response = await fetch('/api/auth/telegram', {
+        const response = await fetch(`${API_URL}/api/auth/telegram`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -376,7 +380,9 @@ async function verifyTelegramCode() {
             })
         });
         
+        console.log('Status:', response.status);
         const data = await response.json();
+        console.log('Data:', data);
         
         if (data.success) {
             closeModal('telegramCodeModal');
@@ -392,13 +398,13 @@ async function verifyTelegramCode() {
             updateUIForLoggedInUser();
             addChatMessage('✓ Авторизация успешна! Добро пожаловать, ' + currentUser.username, 'bot');
         } else {
-            alert('Неверный код. Попробуйте ещё раз.');
+            alert('Неверный код: ' + (data.error || 'Неизвестная ошибка'));
             inputs.forEach(input => input.value = '');
             inputs[0].focus();
         }
     } catch (error) {
-        console.error('Auth error:', error);
-        alert('Ошибка соединения. Попробуйте позже.');
+        console.error('Error:', error);
+        alert('Ошибка: ' + error.message);
     }
 }
 
