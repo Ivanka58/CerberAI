@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cerberai
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DEV_PASSWORD
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
