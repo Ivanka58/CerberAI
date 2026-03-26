@@ -1,4 +1,0 @@
-name: cerberai
-type: python
-pythonVersion: "3.12"
-entrypoint: python app.py
