@@ -4,6 +4,8 @@ const DEV_PASSWORD = typeof process !== 'undefined' && process.env.DEV_PASSWORD
 
 let devMode = false;
 let currentChat = [];
+let currentUser = null;
+let telegramCode = null;
 
 function initParticles() {
     const particlesContainer = document.getElementById('particles');
@@ -270,16 +272,156 @@ function loadChat(id) {
     alert('Загрузка чата из истории...');
 }
 
+function showLogin() {
+    document.getElementById('loginModal').classList.add('active');
+}
+
+function showRegister() {
+    document.getElementById('registerModal').classList.add('active');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+
+function loginWithTelegram() {
+    closeModal('loginModal');
+    closeModal('registerModal');
+    
+    telegramCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    const botUsername = 'your_bot_username';
+    const uniqueCode = btoa(Date.now().toString()).substring(0, 10);
+    const telegramLink = `https://t.me/${botUsername}?start=${uniqueCode}`;
+    
+    window.open(telegramLink, '_blank');
+    
+    setTimeout(() => {
+        document.getElementById('telegramCodeModal').classList.add('active');
+        initCodeInputs();
+    }, 1000);
+}
+
+function initCodeInputs() {
+    const inputs = document.querySelectorAll('.code-input');
+    
+    inputs.forEach((input, index) => {
+        input.value = '';
+        input.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                input.value = e.key;
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                e.preventDefault();
+            } else if (e.key === 'Backspace') {
+                input.value = '';
+                if (index > 0) {
+                    inputs[index - 1].focus();
+                }
+            }
+        });
+        
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const paste = e.clipboardData.getData('text').slice(0, 6);
+            paste.split('').forEach((char, i) => {
+                if (i < inputs.length && char >= '0' && char <= '9') {
+                    inputs[i].value = char;
+                }
+            });
+        });
+    });
+    
+    inputs[0].focus();
+}
+
+function verifyTelegramCode() {
+    const inputs = document.querySelectorAll('.code-input');
+    let enteredCode = '';
+    inputs.forEach(input => {
+        enteredCode += input.value;
+    });
+    
+    if (enteredCode === telegramCode) {
+        closeModal('telegramCodeModal');
+        
+        currentUser = {
+            id: Date.now(),
+            username: 'TelegramUser',
+            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + Date.now(),
+            joinDate: new Date(),
+            daysCount: 0
+        };
+        
+        updateUIForLoggedInUser();
+        addChatMessage('✓ Авторизация успешна! Добро пожаловать, ' + currentUser.username, 'bot');
+    } else {
+        alert('Неверный код. Попробуйте ещё раз.');
+        inputs.forEach(input => input.value = '');
+        inputs[0].focus();
+    }
+}
+
+function updateUIForLoggedInUser() {
+    document.getElementById('sidebarAuth').classList.add('hidden');
+    document.getElementById('sidebarUser').classList.remove('hidden');
+    
+    document.getElementById('sidebarAvatar').src = currentUser.avatar;
+    document.getElementById('sidebarUsername').textContent = currentUser.username;
+    
+    document.getElementById('profileAvatar').src = currentUser.avatar;
+    document.getElementById('profileName').textContent = currentUser.username;
+    
+    updateDaysCount();
+}
+
+function updateDaysCount() {
+    if (!currentUser) return;
+    
+    const now = new Date();
+    const joinDate = new Date(currentUser.joinDate);
+    const diffTime = Math.abs(now - joinDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    document.getElementById('profileDays').textContent = diffDays + ' дней с нами';
+    document.getElementById('profileDaysCount').textContent = diffDays;
+}
+
 function showProfile() {
-    document.getElementById('profileModal').classList.add('active');
+    if (currentUser) {
+        updateDaysCount();
+        document.getElementById('profileModal').classList.add('active');
+    } else {
+        showLogin();
+    }
 }
 
 function showBalance() {
     document.getElementById('balanceModal').classList.add('active');
 }
 
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove('active');
+function confirmLogout() {
+    document.getElementById('logoutConfirmModal').classList.add('active');
+}
+
+function confirmLogoutYes() {
+    closeModal('logoutConfirmModal');
+    closeModal('profileModal');
+    
+    currentUser = null;
+    
+    document.getElementById('sidebarAuth').classList.remove('hidden');
+    document.getElementById('sidebarUser').classList.add('hidden');
+    
+    document.getElementById('sidebarAvatar').src = '';
+    document.getElementById('sidebarUsername').textContent = 'Гость';
+    
+    addChatMessage('Вы вышли из аккаунта.', 'bot');
+}
+
+function logout() {
+    confirmLogout();
 }
 
 function initEventListeners() {
