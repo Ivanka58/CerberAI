@@ -1,16 +1,14 @@
 import os
 import json
-import requests
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import db
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 DEV_PASSWORD = os.environ.get('DEV_PASSWORD', '040111')
-OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
 
 @app.route('/')
 def index():
@@ -25,6 +23,9 @@ def auth_telegram():
     data = request.json
     code = data.get('code')
     unique_link = data.get('unique_link')
+    
+    if not code or not unique_link:
+        return jsonify({'success': False, 'error': 'Missing code or unique_link'}), 400
     
     verified = db.verify_telegram_code(code, unique_link)
     
@@ -80,68 +81,6 @@ def get_user(user_id):
         }
     })
 
-@app.route('/api/chat', methods=['POST'])
-def chat():
-    data = request.json
-    user_id = data.get('user_id')
-    message = data.get('message')
-    history = data.get('history', [])
-    
-    if not message:
-        return jsonify({'error': 'No message provided'}), 400
-    
-    if user_id:
-        db.save_message(user_id, 'default', 'user', message)
-    
-    if message.strip() == DEV_PASSWORD:
-        return jsonify({
-            'response': '🔐 Режим разработчика АКТИВИРОВАН',
-            'dev_mode': True
-        })
-    
-    response = generate_ai_response(message, history)
-    
-    if user_id:
-        db.save_message(user_id, 'default', 'assistant', response)
-    
-    return jsonify({
-        'response': response,
-        'dev_mode': False
-    })
-
-def generate_ai_response(message, history):
-    try:
-        headers = {
-            'Authorization': f'Bearer {OPENROUTER_API_KEY}',
-            'Content-Type': 'application/json'
-        }
-        
-        messages = []
-        for h in history[-6:]:
-            messages.append({'role': h['role'], 'content': h['content']})
-        messages.append({'role': 'user', 'content': message})
-        
-        data = {
-            'model': 'deepseek/deepseek-r1',
-            'messages': messages
-        }
-        
-        response = requests.post(
-            'https://openrouter.ai/api/v1/chat/completions',
-            headers=headers,
-            json=data,
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            result = response.json()
-            return result['choices'][0]['message']['content']
-        else:
-            return "Извините, сервис временно недоступен. Попробуйте позже."
-            
-    except Exception as e:
-        return f"Ошибка: {str(e)}"
-
 @app.route('/api/facts/<int:user_id>', methods=['GET', 'POST'])
 def handle_facts(user_id):
     if request.method == 'GET':
@@ -158,4 +97,5 @@ def handle_facts(user_id):
 
 if __name__ == '__main__':
     db.init_database()
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)
