@@ -10,13 +10,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background -->
     <div class="bg-animation"></div>
     <div class="particles" id="particles"></div>
 
-    <!-- App Layout -->
     <div class="app-layout">
-        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo-icon">C</div>
@@ -41,15 +38,23 @@
                 </div>
             </div>
             
-            <div class="auth-buttons">
-                <button class="btn btn-secondary">Войти</button>
-                <button class="btn btn-primary">Зарегистрироваться</button>
+            <div class="auth-section" id="sidebarAuth">
+                <div class="auth-buttons">
+                    <button class="btn btn-secondary" onclick="showLogin()">Войти</button>
+                    <button class="btn btn-primary" onclick="showRegister()">Зарегистрироваться</button>
+                </div>
+            </div>
+            
+            <div class="user-section hidden" id="sidebarUser">
+                <div class="user-mini-profile">
+                    <img src="" alt="Avatar" class="user-mini-avatar" id="sidebarAvatar">
+                    <span class="user-mini-name" id="sidebarUsername">Гость</span>
+                </div>
+                <button class="btn btn-logout" onclick="logout()">Выйти</button>
             </div>
         </aside>
 
-        <!-- Main Area -->
         <div class="main-area">
-            <!-- Navigation -->
             <nav class="navbar">
                 <div class="nav-container">
                     <div class="nav-left">
@@ -89,7 +94,6 @@
                 </div>
             </nav>
 
-            <!-- Hero Section -->
             <section class="hero" id="hero">
                 <div class="hero-content">
                     <div class="badge-container">
@@ -128,7 +132,6 @@
                         </div>
                     </div>
 
-                    <!-- Chat Input -->
                     <div class="chat-container">
                         <div class="chat-wrapper">
                             <div class="input-area">
@@ -163,7 +166,6 @@
                 </div>
             </section>
 
-            <!-- Router Info -->
             <section class="router-info" id="router">
                 <div class="section-header">
                     <span class="section-label">Интеллектуальный маршрутизатор</span>
@@ -217,7 +219,6 @@
                 </div>
             </section>
 
-            <!-- Features -->
             <section class="features" id="features">
                 <div class="section-header">
                     <span class="section-label">Возможности</span>
@@ -281,7 +282,6 @@
                 </div>
             </section>
 
-            <!-- Stats -->
             <section class="stats" id="stats">
                 <div class="stats-grid">
                     <div class="stat-item">
@@ -303,7 +303,6 @@
                 </div>
             </section>
 
-            <!-- Footer -->
             <footer class="footer">
                 <div class="footer-links">
                     <a href="#" class="footer-link">О проекте</a>
@@ -321,7 +320,6 @@
         </div>
     </div>
 
-    <!-- Chat App (Full Screen) -->
     <div class="chat-app" id="chatApp">
         <div class="dev-mode-banner" id="devBannerFull">
             🔐 РЕЖИМ РАЗРАБОТЧИКА АКТИВЕН — Все сообщения сохраняются как системные команды
@@ -381,7 +379,69 @@
         </div>
     </div>
 
-    <!-- Profile Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Вход</h2>
+                <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-telegram" onclick="loginWithTelegram()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
+                    </svg>
+                    Войти по Telegram
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Регистрация</h2>
+                <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Введите email</label>
+                    <input type="email" class="form-input" placeholder="example@mail.com" disabled>
+                </div>
+                <button class="btn btn-disabled" disabled>Получить код</button>
+                
+                <div class="divider">или</div>
+                
+                <button class="btn btn-telegram" onclick="loginWithTelegram()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
+                    </svg>
+                    Войти по Telegram
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="telegramCodeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Подтверждение Telegram</h2>
+                <button class="modal-close" onclick="closeModal('telegramCodeModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text">Мы отправили код в Telegram. Введите его ниже:</p>
+                <div class="code-inputs">
+                    <input type="text" class="code-input" maxlength="1" data-index="0">
+                    <input type="text" class="code-input" maxlength="1" data-index="1">
+                    <input type="text" class="code-input" maxlength="1" data-index="2">
+                    <input type="text" class="code-input" maxlength="1" data-index="3">
+                    <input type="text" class="code-input" maxlength="1" data-index="4">
+                    <input type="text" class="code-input" maxlength="1" data-index="5">
+                </div>
+                <button class="btn btn-primary" onclick="verifyTelegramCode()" style="width: 100%; margin-top: 20px;">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -389,31 +449,32 @@
                 <button class="modal-close" onclick="closeModal('profileModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="profile-avatar">👤</div>
-                <div class="profile-name">Гость</div>
-                <div class="profile-status">Не авторизован</div>
+                <div class="profile-avatar-container">
+                    <img src="" alt="Avatar" class="profile-avatar" id="profileAvatar">
+                </div>
+                <div class="profile-name" id="profileName">Гость</div>
+                <div class="profile-days" id="profileDays">0 дней с нами</div>
+                
                 <div class="profile-stats">
                     <div class="profile-stat">
-                        <div class="profile-stat-value">0</div>
+                        <div class="profile-stat-value" id="profileMessages">0</div>
                         <div class="profile-stat-label">Сообщений</div>
                     </div>
                     <div class="profile-stat">
-                        <div class="profile-stat-value">0</div>
-                        <div class="profile-stat-label">Сохранённых фактов</div>
+                        <div class="profile-stat-value" id="profileFacts">0</div>
+                        <div class="profile-stat-label">Фактов</div>
                     </div>
                     <div class="profile-stat">
-                        <div class="profile-stat-value">0</div>
-                        <div class="profile-stat-label">Дней с нами</div>
+                        <div class="profile-stat-value" id="profileDaysCount">0</div>
+                        <div class="profile-stat-label">Дней</div>
                     </div>
                 </div>
-                <div class="profile-actions">
-                    <button class="btn btn-primary" style="width: 100%;">Авторизоваться</button>
-                </div>
+                
+                <button class="btn btn-logout-red" onclick="confirmLogout()">Выйти</button>
             </div>
         </div>
     </div>
 
-    <!-- Balance Modal -->
     <div class="modal" id="balanceModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -421,19 +482,36 @@
                 <button class="modal-close" onclick="closeModal('balanceModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="balance-amount">0 ₽</div>
+                <div class="balance-amount" id="balanceAmount">0 ₽</div>
                 <div class="balance-label">Текущий баланс</div>
+                
                 <div class="balance-info">
                     <p>💡 Пополнение баланса скоро будет доступно</p>
                     <p>🎁 Новым пользователям — бонусные токены</p>
                     <p>⚡ Безлимитный режим в разработке</p>
                 </div>
+                
                 <div class="balance-history">
                     <h3>История операций</h3>
-                    <div class="history-empty">Пока нет операций</div>
+                    <div class="history-empty" id="balanceHistory">Пока нет операций</div>
                 </div>
-                <div class="profile-actions">
-                    <button class="btn btn-secondary" style="width: 100%;" disabled>Пополнить (скоро)</button>
+                
+                <button class="btn btn-secondary" style="width: 100%;" disabled>Пополнить (скоро)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="logoutConfirmModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>Подтверждение</h2>
+                <button class="modal-close" onclick="closeModal('logoutConfirmModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <p class="modal-text">Вы уверены, что хотите выйти?</p>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('logoutConfirmModal')">Отмена</button>
+                    <button class="btn btn-logout-red" style="flex: 1;" onclick="confirmLogoutYes()">Выйти</button>
                 </div>
             </div>
         </div>
