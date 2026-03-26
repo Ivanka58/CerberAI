@@ -43,8 +43,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         logger.info(f"Generated code {code} for user {user.id}")
     else:
+        unique_link = generate_unique_link()
         keyboard = [
-            [InlineKeyboardButton("🔓 Войти в CerberAI", url=f"https://t.me/{BOT_USERNAME}?start={generate_unique_link()}")]
+            [InlineKeyboardButton("🔓 Войти в CerberAI", url=f"https://t.me/{BOT_USERNAME}?start={unique_link}")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         
@@ -96,6 +97,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     if not BOT_TOKEN:
         logger.error("BOT_TOKEN not found in environment variables")
+        return
+    
+    # Инициализация базы данных при старте
+    try:
+        db.init_database()
+        logger.info("Database initialized successfully")
+    except Exception as e:
+        logger.error(f"Database initialization error: {e}")
         return
     
     application = Application.builder().token(BOT_TOKEN).build()
