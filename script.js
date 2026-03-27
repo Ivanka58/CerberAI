@@ -407,16 +407,44 @@ async function verifyTelegramCode() {
     }
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ — скрывает кнопки входа/регистрации
 function updateUIForLoggedInUser() {
-    document.getElementById('sidebarAuth').classList.add('hidden');
-    document.getElementById('sidebarUser').classList.remove('hidden');
+    // Скрываем секцию авторизации (кнопки Войти/Зарегистрироваться)
+    const sidebarAuth = document.getElementById('sidebarAuth');
+    if (sidebarAuth) {
+        sidebarAuth.style.display = 'none';
+    }
     
-    document.getElementById('sidebarAvatar').src = currentUser.avatar;
-    document.getElementById('sidebarUsername').textContent = currentUser.username;
+    // Показываем секцию пользователя
+    const sidebarUser = document.getElementById('sidebarUser');
+    if (sidebarUser) {
+        sidebarUser.classList.remove('hidden');
+        sidebarUser.style.display = 'block';
+    }
     
-    document.getElementById('profileAvatar').src = currentUser.avatar;
-    document.getElementById('profileName').textContent = currentUser.username;
+    // Обновляем аватар и имя в боковом меню
+    const sidebarAvatar = document.getElementById('sidebarAvatar');
+    const sidebarUsername = document.getElementById('sidebarUsername');
     
+    if (sidebarAvatar && currentUser) {
+        sidebarAvatar.src = currentUser.avatar;
+    }
+    if (sidebarUsername && currentUser) {
+        sidebarUsername.textContent = currentUser.username || 'Пользователь';
+    }
+    
+    // Обновляем профиль в модалке
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileName = document.getElementById('profileName');
+    
+    if (profileAvatar && currentUser) {
+        profileAvatar.src = currentUser.avatar;
+    }
+    if (profileName && currentUser) {
+        profileName.textContent = currentUser.username || 'Пользователь';
+    }
+    
+    // Обновляем счётчик дней
     updateDaysCount();
 }
 
@@ -428,8 +456,15 @@ function updateDaysCount() {
     const diffTime = Math.abs(now - joinDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    document.getElementById('profileDays').textContent = diffDays + ' дней с нами';
-    document.getElementById('profileDaysCount').textContent = diffDays;
+    const profileDays = document.getElementById('profileDays');
+    const profileDaysCount = document.getElementById('profileDaysCount');
+    
+    if (profileDays) {
+        profileDays.textContent = diffDays + ' дней с нами';
+    }
+    if (profileDaysCount) {
+        profileDaysCount.textContent = diffDays;
+    }
 }
 
 function showProfile() {
@@ -456,11 +491,29 @@ function confirmLogoutYes() {
     currentUser = null;
     currentUniqueLink = null;
     
-    document.getElementById('sidebarAuth').classList.remove('hidden');
-    document.getElementById('sidebarUser').classList.add('hidden');
+    // Показываем кнопки входа/регистрации снова
+    const sidebarAuth = document.getElementById('sidebarAuth');
+    if (sidebarAuth) {
+        sidebarAuth.style.display = 'block';
+    }
     
-    document.getElementById('sidebarAvatar').src = '';
-    document.getElementById('sidebarUsername').textContent = 'Гость';
+    // Скрываем секцию пользователя
+    const sidebarUser = document.getElementById('sidebarUser');
+    if (sidebarUser) {
+        sidebarUser.classList.add('hidden');
+        sidebarUser.style.display = 'none';
+    }
+    
+    // Сбрасываем аватар и имя
+    const sidebarAvatar = document.getElementById('sidebarAvatar');
+    const sidebarUsername = document.getElementById('sidebarUsername');
+    
+    if (sidebarAvatar) {
+        sidebarAvatar.src = '';
+    }
+    if (sidebarUsername) {
+        sidebarUsername.textContent = 'Гость';
+    }
     
     addChatMessage('Вы вышли из аккаунта.', 'bot');
 }
@@ -529,4 +582,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCounters();
     initEventListeners();
+    
+    // При загрузке проверяем, авторизован ли пользователь
+    // Если нет — показываем кнопки входа
+    if (!currentUser) {
+        const sidebarAuth = document.getElementById('sidebarAuth');
+        if (sidebarAuth) {
+            sidebarAuth.style.display = 'block';
+        }
+    }
 });
