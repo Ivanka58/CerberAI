@@ -1,4 +1,4 @@
-const API_URL = 'https://amvera-kainsumrak-run-cerberweb';
+const API_URL = 'https://cerberweb-kainsumrak.amvera.io';
 
 const DEV_PASSWORD = typeof process !== 'undefined' && process.env.DEV_PASSWORD 
     ? process.env.DEV_PASSWORD 
@@ -290,7 +290,6 @@ function loginWithTelegram() {
     closeModal('loginModal');
     closeModal('registerModal');
     
-    // Генерируем уникальную ссылку и сохраняем для проверки
     currentUniqueLink = generateUniqueLink();
     
     const botUsername = 'cerberlogin_bot';
