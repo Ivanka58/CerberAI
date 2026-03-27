@@ -1,0 +1,31 @@
+name: Run Bot
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run bot
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+        BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
+      run: |
+        python bot.py
