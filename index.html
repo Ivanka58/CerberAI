@@ -38,7 +38,6 @@
                 </div>
             </div>
             
-            <!-- Секция авторизации (скрывается после входа) -->
             <div class="auth-section" id="sidebarAuth">
                 <div class="auth-buttons">
                     <button class="btn btn-secondary" onclick="showLogin()">Войти</button>
@@ -46,7 +45,6 @@
                 </div>
             </div>
             
-            <!-- Секция пользователя (показывается после входа) -->
             <div class="user-section hidden" id="sidebarUser">
                 <div class="user-mini-profile">
                     <img src="" alt="Avatar" class="user-mini-avatar" id="sidebarAvatar">
@@ -381,9 +379,6 @@
         </div>
     </div>
 
-    <!-- ==================== МОДАЛКИ ==================== -->
-
-    <!-- Модалка входа (обновленная) -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -391,39 +386,16 @@
                 <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- Вкладки -->
-                <div class="auth-tabs">
-                    <button class="auth-tab active" onclick="switchLoginTab('email')">Email</button>
-                    <button class="auth-tab" onclick="switchLoginTab('telegram')">Telegram</button>
-                </div>
-                
-                <!-- Форма входа по Email -->
-                <div id="loginEmailForm">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-input" id="loginEmail" placeholder="example@mail.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="password" class="form-input" id="loginPassword" placeholder="••••••••">
-                    </div>
-                    <button class="btn btn-primary" onclick="loginWithEmail()" style="width: 100%;">Войти</button>
-                </div>
-                
-                <!-- Форма входа по Telegram (скрыта по умолчанию) -->
-                <div id="loginTelegramForm" style="display: none;">
-                    <button class="btn btn-telegram" onclick="loginWithTelegram()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
-                        </svg>
-                        Войти через Telegram
-                    </button>
-                </div>
+                <button class="btn btn-telegram" onclick="loginWithTelegram()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
+                    </svg>
+                    Войти по Telegram
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Модалка регистрации (обновленная) -->
     <div class="modal" id="registerModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -431,88 +403,24 @@
                 <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- Шаг 1: Ввод Email -->
-                <div id="registerStep1">
-                    <p class="modal-text">Введите ваш email для регистрации</p>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-input" id="registerEmail" placeholder="example@mail.com">
-                    </div>
-                    <button class="btn btn-primary" onclick="sendEmailCode()" style="width: 100%;">Получить код</button>
-                    
-                    <div class="divider">или</div>
-                    
-                    <button class="btn btn-telegram" onclick="loginWithTelegram()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
-                        </svg>
-                        Регистрация через Telegram
-                    </button>
+                <div class="form-group">
+                    <label>Введите email</label>
+                    <input type="email" class="form-input" placeholder="example@mail.com" disabled>
                 </div>
+                <button class="btn btn-disabled" disabled>Получить код</button>
                 
-                <!-- Шаг 2: Ввод кода (скрыт по умолчанию) -->
-                <div id="registerStep2" style="display: none;">
-                    <p class="modal-text">Мы отправили 6-значный код на <span id="registerEmailDisplay"></span></p>
-                    <div class="code-inputs">
-                        <input type="text" class="code-input" maxlength="1" data-index="0">
-                        <input type="text" class="code-input" maxlength="1" data-index="1">
-                        <input type="text" class="code-input" maxlength="1" data-index="2">
-                        <input type="text" class="code-input" maxlength="1" data-index="3">
-                        <input type="text" class="code-input" maxlength="1" data-index="4">
-                        <input type="text" class="code-input" maxlength="1" data-index="5">
-                    </div>
-                    <button class="btn btn-primary" onclick="verifyEmailCode()" style="width: 100%; margin-top: 20px;">Подтвердить</button>
-                    <p class="modal-text" style="margin-top: 12px;">
-                        <a href="#" onclick="resendEmailCode()" style="color: var(--accent-primary);">Отправить код повторно</a>
-                    </p>
-                </div>
+                <div class="divider">или</div>
                 
-                <!-- Шаг 3: Создание пароля (скрыт по умолчанию) -->
-                <div id="registerStep3" style="display: none;">
-                    <p class="modal-text">Придумайте имя пользователя и пароль</p>
-                    
-                    <div class="form-group">
-                        <label>Имя пользователя</label>
-                        <input type="text" class="form-input" id="registerUsername" placeholder="username">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="password" class="form-input" id="registerPassword" placeholder="••••••••" oninput="checkPasswordStrength()">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Повторите пароль</label>
-                        <input type="password" class="form-input" id="registerPasswordConfirm" placeholder="••••••••" oninput="checkPasswordMatch()">
-                    </div>
-                    
-                    <!-- Требования к паролю -->
-                    <div class="password-requirements">
-                        <div class="requirement" id="req-length">
-                            <span class="req-icon">❌</span>
-                            <span>Минимум 8 символов</span>
-                        </div>
-                        <div class="requirement" id="req-uppercase">
-                            <span class="req-icon">❌</span>
-                            <span>Заглавная буква (A-Z)</span>
-                        </div>
-                        <div class="requirement" id="req-special">
-                            <span class="req-icon">❌</span>
-                            <span>Спецсимвол (:;,./*-+=_!?@#$%^&)</span>
-                        </div>
-                        <div class="requirement" id="req-match">
-                            <span class="req-icon">❌</span>
-                            <span>Пароли совпадают</span>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary" id="registerSubmitBtn" onclick="completeRegistration()" style="width: 100%; margin-top: 20px;" disabled>Зарегистрироваться</button>
-                </div>
+                <button class="btn btn-telegram" onclick="loginWithTelegram()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.623 4.823-4.351c.192-.192-.054-.3-.297-.108l-5.965 3.759-2.568-.802c-.56-.176-.572-.56.117-.828l10.037-3.869c.466-.174.875.108.773.828z"/>
+                    </svg>
+                    Войти по Telegram
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Модалка подтверждения Telegram (как была) -->
     <div class="modal" id="telegramCodeModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -534,7 +442,6 @@
         </div>
     </div>
 
-    <!-- Модалка профиля (как была) -->
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -568,7 +475,6 @@
         </div>
     </div>
 
-    <!-- Модалка баланса (как была) -->
     <div class="modal" id="balanceModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -595,7 +501,6 @@
         </div>
     </div>
 
-    <!-- Модалка подтверждения выхода (как была) -->
     <div class="modal" id="logoutConfirmModal">
         <div class="modal-content" style="max-width: 400px;">
             <div class="modal-header">
